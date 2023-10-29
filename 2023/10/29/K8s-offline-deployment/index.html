@@ -13,23 +13,23 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2023/10/19/templatetalks-crud-design/"/>
+    <link rel="canonical" href="http://example.com/2023/10/29/k8s-offline-deployment/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="IntroductionBackground测试一种很新的prompt，使AI能够像执行代码一样进行规定步骤灵感来源于Mr.-Ranedeer-AI-Tutor 结构类似于代码结构特点：  使用WebPilot访问互联网 使用Noteable提供代码环境 使用Noteable记录结果，加强上下文能力  猜想能否借鉴DFA(Deterministic Finite Automaton)对当前状态进行">
+        <meta name="description" content="Environments： Online env Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory   Offline env(target node) Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory, 100GB available disk space   Any VM (refer to">
 <meta property="og:type" content="article">
-<meta property="og:title" content="测试一种很新的Prompt">
-<meta property="og:url" content="http://example.com/2023/10/19/TemplateTalks-CRUD-Design/index.html">
+<meta property="og:title" content="K8s offline deployment">
+<meta property="og:url" content="http://example.com/2023/10/29/K8s-offline-deployment/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="IntroductionBackground测试一种很新的prompt，使AI能够像执行代码一样进行规定步骤灵感来源于Mr.-Ranedeer-AI-Tutor 结构类似于代码结构特点：  使用WebPilot访问互联网 使用Noteable提供代码环境 使用Noteable记录结果，加强上下文能力  猜想能否借鉴DFA(Deterministic Finite Automaton)对当前状态进行">
+<meta property="og:description" content="Environments： Online env Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory   Offline env(target node) Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory, 100GB available disk space   Any VM (refer to">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-10-19T11:00:40.000Z">
-<meta property="article:modified_time" content="2023-10-29T05:38:56.690Z">
+<meta property="article:published_time" content="2023-10-29T05:43:11.000Z">
+<meta property="article:modified_time" content="2023-10-29T05:55:33.500Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="AI">
-<meta property="article:tag" content="Design">
+<meta property="article:tag" content="Deployment">
+<meta property="article:tag" content="K8s">
 <meta name="twitter:card" content="summary">
     
     
@@ -42,7 +42,7 @@
     
     <title>
         
-            测试一种很新的Prompt -
+            K8s offline deployment -
         
         Alco&#39;s Blogs
     </title>
@@ -335,7 +335,7 @@
 
         <div class="article-title">
             
-                <h1 class="article-title-regular">测试一种很新的Prompt</h1>
+                <h1 class="article-title-regular">K8s offline deployment</h1>
             
             </div>
             
@@ -357,15 +357,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-10-19 19:40</span>
-        <span class="mobile">2023-10-19 19:40</span>
+        <span class="desktop">2023-10-29 13:43:11</span>
+        <span class="mobile">2023-10-29 13:43:11</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-10-29 13:38:56</span>
-            <span class="mobile">2023-10-29 13:38:56</span>
+            <span class="desktop">2023-10-29 13:55:33</span>
+            <span class="mobile">2023-10-29 13:55:33</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -379,7 +379,7 @@
                     
                         
                         <li>
-                            <a href="/categories/AI/">AI</a>&nbsp;
+                            <a href="/categories/K8s/">K8s</a>&nbsp;
                         </li>
                     
                     
@@ -393,11 +393,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/AI/">AI</a>&nbsp;
+                        <a href="/tags/Deployment/">Deployment</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/Design/">Design</a>&nbsp;
+                        | <a href="/tags/K8s/">K8s</a>&nbsp;
                     </li>
                 
             </ul>
@@ -423,53 +423,92 @@
 
 
         <div class="article-content markdown-body">
-            <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>测试一种很新的prompt，使AI能够像执行代码一样进行规定步骤<br>灵感来源于<a class="link"   target="_blank" rel="noopener" href="https://github.com/JushBJJ/Mr.-Ranedeer-AI-Tutor" >Mr.-Ranedeer-AI-Tutor <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>结构类似于代码结构<br>特点：</p>
+            <h2 id="Environments："><a href="#Environments：" class="headerlink" title="Environments："></a>Environments：</h2><ul>
+<li>Online env<ul>
+<li>Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory</li>
+</ul>
+</li>
+<li>Offline env(target node)<ul>
+<li>Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory, 100GB available disk space</li>
+</ul>
+</li>
+<li>Any VM (refer to source VM, localhost)<ul>
+<li>Python 3.10</li>
+<li>kubespray 2.22.1, kubespray-offline 2.22.1</li>
+<li>100GB available disk space<br>Note: You must execute this process on the same OS of k8s target nodes.(Online env &amp; target node)</li>
+</ul>
+</li>
+</ul>
+<h2 id="On-localhost"><a href="#On-localhost" class="headerlink" title="On localhost"></a>On localhost</h2><h3 id="Clone-kubespray-on-localhost"><a href="#Clone-kubespray-on-localhost" class="headerlink" title="Clone kubespray on localhost"></a>Clone kubespray on localhost</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/kubernetes-sigs/kubespray.git</span><br></pre></td></tr></table></figure></div>
+<h3 id="Install-pip"><a href="#Install-pip" class="headerlink" title="Install pip"></a>Install pip</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sS https://bootstrap.pypa.io/get-pip.py | python3</span><br></pre></td></tr></table></figure></div>
+<h3 id="Install-Ansible"><a href="#Install-Ansible" class="headerlink" title="Install Ansible"></a>Install Ansible</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># if your python3 is python3.8</span><br><span class="line">alias python3=&#x27;/usr/bin/python3.10&#x27;</span><br><span class="line"></span><br><span class="line"># install venv</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install python3.10-venv</span><br><span class="line"></span><br><span class="line"># source python venv</span><br><span class="line">VENVDIR=kubespray-venv</span><br><span class="line">KUBESPRAYDIR=kubespray</span><br><span class="line">python3 -m venv $VENVDIR</span><br><span class="line">source $VENVDIR/bin/activate</span><br><span class="line">cd $KUBESPRAYDIR</span><br><span class="line">python3 -m pip install -U -r requirements.txt</span><br></pre></td></tr></table></figure></div>
+<h3 id="Add-authorized-keys-update"><a href="#Add-authorized-keys-update" class="headerlink" title="Add authorized_keys &amp; update"></a>Add authorized_keys &amp; update</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br><span class="line">ssh-copy-id &#123;online-env-user&#125;@&#123;online-env-ip&#125;</span><br></pre></td></tr></table></figure></div>
+<h3 id="Install-k8s-to-online-env"><a href="#Install-k8s-to-online-env" class="headerlink" title="Install k8s to online-env"></a>Install k8s to online-env</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">Change K8s version &amp; calico to ovn in inventory/online_env/group_vars/k8s_cluster/k8s-cluster.yml</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># Copy ``inventory/sample`` as ``inventory/mycluster``</span><br><span class="line">cp -rfp inventory/sample inventory/online_env</span><br><span class="line"></span><br><span class="line"># Update Ansible inventory file with inventory builder</span><br><span class="line">declare -a IPS=(online-env-ip)</span><br><span class="line">CONFIG_FILE=inventory/online_env/hosts.yaml python3 contrib/inventory_builder/inventory.py $&#123;IPS[@]&#125;</span><br><span class="line"></span><br><span class="line"># Review and change parameters under ``inventory/mycluster/group_vars``</span><br><span class="line">cat inventory/online_env/group_vars/all/all.yml</span><br><span class="line"># Update </span><br><span class="line">cat inventory/online_env/group_vars/k8s_cluster/k8s-cluster.yml</span><br><span class="line"></span><br><span class="line"># Clean up old Kubernetes cluster with Ansible Playbook - run the playbook as root</span><br><span class="line"># The option `--become` is required, as for example cleaning up SSL keys in /etc/,</span><br><span class="line"># uninstalling old packages and interacting with various systemd daemons.</span><br><span class="line"># Without --become the playbook will fail to run!</span><br><span class="line"># And be mind it will remove the current kubernetes cluster (if it&#x27;s running)!</span><br><span class="line">ansible-playbook -i inventory/online_env/hosts.yaml  --become --user=&#123;online_env_username&#125; --become-user=root --ask-become-pass reset.yml</span><br><span class="line"></span><br><span class="line"># Deploy Kubespray with Ansible Playbook - run the playbook as root</span><br><span class="line"># The option `--become` is required, as for example writing SSL keys in /etc/,</span><br><span class="line"># installing packages and interacting with various systemd daemons.</span><br><span class="line"># Without --become the playbook will fail to run!</span><br><span class="line"># Add--user=&#123;username&#125; &amp; --ask-become-pass</span><br><span class="line">ansible-playbook -i inventory/online_env/hosts.yaml  --become --user=&#123;online_env_username&#125; --become-user=root --ask-become-pass cluster.yml</span><br></pre></td></tr></table></figure></div>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h3><p>Or add Add–user&#x3D;{username} &amp; –ask-become-pass to reset and cluster</p>
 <ul>
-<li>使用WebPilot访问互联网</li>
-<li>使用Noteable提供代码环境</li>
-<li>使用Noteable记录结果，加强上下文能力</li>
+<li>fatal: [node1]: FAILED! &#x3D;&gt; {“attempts”: 4, “censored”: “the output has been hidden due to the fact that ‘no_log: true’ was specified for this result”, “changed”: false}<br>Run: vi inventory&#x2F;{yourcluster}&#x2F;group_vars&#x2F;all&#x2F;mirror.yml, add mirror</li>
 </ul>
-<h3 id="猜想"><a href="#猜想" class="headerlink" title="猜想"></a>猜想</h3><p>能否借鉴<code>DFA(Deterministic Finite Automaton)</code>对当前状态进行特定任务<br>尝试使用<code>Langchain chain</code>及<code>agent</code>构建<br>能否通过</p>
-<h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><ul>
-<li>模型OpenAI GPT-4</li>
-<li>插件使用Noteable、WebPilot</li>
+<h3 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h3><p>Run:sudo kubectl get pods -A</p>
+<h2 id="On-online-env"><a href="#On-online-env" class="headerlink" title="On online env"></a>On online env</h2><h3 id="Clone-Kubespray-offline-on-online-env"><a href="#Clone-Kubespray-offline-on-online-env" class="headerlink" title="Clone Kubespray-offline on online-env"></a>Clone Kubespray-offline on online-env</h3><p>Note: You must execute this process on the same OS of k8s target nodes.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/kubespray-offline/kubespray-offline.git</span><br></pre></td></tr></table></figure></div>
+<p>Before download offline files, check and edit configurations in kubespray-offlineconfig.sh.<br>If you don’t have container runtime (docker or containerd), install it first.</p>
+<ul>
+<li>To use Docker CE<ul>
+<li>run install-docker.sh to install Docker CE.</li>
 </ul>
-<h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><h3 id="将以下业务转换为Prompt进行测试："><a href="#将以下业务转换为Prompt进行测试：" class="headerlink" title="将以下业务转换为Prompt进行测试："></a>将以下业务转换为Prompt进行测试：</h3><ol>
-<li>搜索并访问Steam全球榜单上升趋势的游戏和下降趋势的游戏进行分类</li>
-<li>将上升趋势、下降的游戏tag生成map</li>
-<li>根据tag生成热力图分析当前玩家游戏类型喜好趋势</li>
-</ol>
-<h3 id="测试内容："><a href="#测试内容：" class="headerlink" title="测试内容："></a>测试内容：</h3><ul>
-<li><p>业务逻辑进行的完整性  </p>
 </li>
-<li><p>业务流程的顺序  </p>
-</li>
-<li><p>相同逻辑间流程的差异</p>
+<li>To use containerd<ul>
+<li>run.&#x2F;install-containerd.sh to install containerd and nerdctl.</li>
+<li>set docker environment variable to &#x2F;usr&#x2F;local&#x2F;bin&#x2F;nerdctl in config.sh.<br>Then, download all files</li>
+</ul>
 </li>
 </ul>
-<h2 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h2><h3 id="代码逻辑"><a href="#代码逻辑" class="headerlink" title="代码逻辑"></a>代码逻辑</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">role = [<span class="string">&quot;&quot;</span>]</span><br><span class="line">global_rules = [<span class="string">&quot;&quot;</span>]</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init</span>():</span><br><span class="line">    <span class="comment"># init role</span></span><br><span class="line">    <span class="comment"># set global rules</span></span><br><span class="line">    <span class="comment"># tell tasks</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 获取游戏链接并分类</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GetGameLinks</span>(<span class="params">listpagelink</span>):</span><br><span class="line">    up,down = [],[]</span><br><span class="line">    <span class="keyword">for</span> link <span class="keyword">in</span> listpagelink:</span><br><span class="line">        links.append(link)</span><br><span class="line">    <span class="keyword">return</span> links</span><br><span class="line"></span><br><span class="line"><span class="comment">## 获取热门用户自定义标签</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GetListTags</span>(<span class="params">links</span>):</span><br><span class="line">    <span class="built_in">map</span> = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> link <span class="keyword">in</span> links:</span><br><span class="line">        <span class="keyword">for</span> tag <span class="keyword">in</span> links:</span><br><span class="line">            <span class="built_in">map</span>[tag] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">map</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="built_in">list</span> = <span class="built_in">input</span>()</span><br><span class="line">    up, down = GetList()</span><br><span class="line">    up_tags = GetListTags(up)</span><br><span class="line">    down_tags = GetListTags(down)</span><br><span class="line">    Draw(up_tags)</span><br><span class="line">    Draw(down_tags)</span><br><span class="line"></span><br><span class="line"><span class="comment"># init role</span></span><br><span class="line">init()</span><br><span class="line"><span class="comment"># main</span></span><br><span class="line">main()</span><br></pre></td></tr></table></figure></div>
-<h3 id="Prompt编写"><a href="#Prompt编写" class="headerlink" title="Prompt编写"></a>Prompt编写</h3><p>测试链接 ： <a class="link"   target="_blank" rel="noopener" href="https://store.steampowered.com/charts/topselling/global" >https://store.steampowered.com/charts/topselling/global <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[角色]</span><br><span class="line">    你是一个热门游戏分析专家，分析热门游戏趋势，你需要根据提供的排行榜链接进行分析</span><br><span class="line"></span><br><span class="line">[全局规则]</span><br><span class="line">    1. 像执行代码一样运行，[]代表变量、&#123;&#125;()代表函数，你需要从 主函数()&#123;&#125; 开始执行</span><br><span class="line">    2. 你的Noteable工作文件ID为：2826d412-d688-44b2-bae7-2b091581e6f8</span><br><span class="line">    3. 根据提示总结数据并保存进Noteable中定义为Python类型变量</span><br><span class="line">    4. 根据函数读取Noteable工作文件变量辅助执行</span><br><span class="line">    5. 提示用户你执行到哪里了</span><br><span class="line">    6. 你的角色需要严格遵守 [角色]</span><br><span class="line"></span><br><span class="line">获取游戏链接(网页链接) &#123;</span><br><span class="line">    1. 根据 [网页链接] 分析网页并进行总结，输出所有游戏的链接及趋势，并将榜单按照上升及下降趋势输出给用户</span><br><span class="line">    2. [1]中的游戏按照上升趋势及下降趋势分类，将游戏按照趋势将**游戏链接**保存为 up, down 两个数组并定义进Noteable中</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">获取列表游戏标签(标签链接列表) &#123;</span><br><span class="line">    1. 在Noteable中定义一个map，按照 [标签链接列表] 名字 命名为 [趋势]_map</span><br><span class="line">    2. 查看将每个链接中的游戏tag，输出游戏名称及游戏tag</span><br><span class="line">    3. 将tag当作key并将up_map[tag]+1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">主函数()&#123;</span><br><span class="line">    在Noteable中定义up_map字典</span><br><span class="line">    读取并遵循[全局规则]</span><br><span class="line">    执行&#123;获取游戏链接&#125;(https://store.steampowered.com/charts/topselling/global)</span><br><span class="line">    读取Noteable中up信息</span><br><span class="line">    执行&#123;获取列表游戏标签&#125;(up)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
-<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>执行流程太长无法跑完，鉴定为不如 Langchain 工作流，但是可以执行简单较短逻辑。<br>多次测试除代码编写问题，角色能够完全根据提供的逻辑进行分析，遗忘曲线较低。<br>后续可以尝试直接调用用户定义的简单Python代码执行<del>这不是Langchain agent吗</del>  </p>
-
+<h2 id="Download-offline-files"><a href="#Download-offline-files" class="headerlink" title="Download offline files"></a>Download offline files</h2><h3 id="Change-k8s-version"><a href="#Change-k8s-version" class="headerlink" title="Change k8s version"></a>Change k8s version</h3><p>Change download-kubespray-files.sh line 82:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash $&#123;KUBESPRAY_DIR&#125;/contrib/offline/generate_list.sh -e kube_version=&quot;v1.26.3&quot; || exit 1</span><br></pre></td></tr></table></figure></div>
+<p>Run: download-all.sh<br>All artifacts are stored in .&#x2F;outputs directory.<br>Package outputs:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -czvf outputs.tar.gz outputs/</span><br></pre></td></tr></table></figure></div>
+<p>Use the SCP command to transfer the output archive to the machine where you need to install k8s in an offline environment.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp outputs.tar.gz xxx@192.168.xxx.xxx:.</span><br></pre></td></tr></table></figure></div>
+<h2 id="Offline-installation"><a href="#Offline-installation" class="headerlink" title="Offline installation"></a>Offline installation</h2><h3 id="Target-node-support-scripts"><a href="#Target-node-support-scripts" class="headerlink" title="Target node support scripts"></a>Target node support scripts</h3><p>Unpackage tar on the machine where you need to install k8s to an offline environment.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf outputs.tar.gz</span><br></pre></td></tr></table></figure></div>
+<p>Run: outputs&#x2F;setup-all.sh</p>
+<h3 id="Deploy-kubernetes-using-Kubespray"><a href="#Deploy-kubernetes-using-Kubespray" class="headerlink" title="Deploy kubernetes using Kubespray"></a><a class="link"   target="_blank" rel="noopener" href="https://github.com/kubespray-offline/kubespray-offline#deploy-kubernetes-using-kubespray" >Deploy kubernetes using Kubespray <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># Create and activate venv:</span><br><span class="line">python3 -m venv ~/.venv/default</span><br><span class="line">source ~/.venv/default/bin/activate</span><br><span class="line"></span><br><span class="line"># Note: For Ubuntu 20.04 and RHEL/CentOS 8, you need to use python 3.9.</span><br><span class="line"># python3.9 -m venv ~/.venv/default</span><br><span class="line"># source ~/.venv/default/bin/activate</span><br><span class="line"></span><br><span class="line"># Extract kubespray and apply patches:</span><br><span class="line">./extract-kubespray.sh</span><br><span class="line">cd kubespray-&#123;version&#125;</span><br><span class="line"></span><br><span class="line"># For Ubuntu 22.04, you need to install build tools to build some python packages.</span><br><span class="line">sudo apt install gcc python3-dev libffi-dev libssl-dev</span><br><span class="line"></span><br><span class="line"># Install ansible:</span><br><span class="line">pip install -U pip                # update pip</span><br><span class="line">pip install -r requirements.txt   # Install ansible</span><br></pre></td></tr></table></figure></div>
+<h3 id="Create-offline-yml"><a href="#Create-offline-yml" class="headerlink" title="Create offline.yml"></a>Create offline.yml</h3><p>Create and place offline.yml file to your group_vars&#x2F;all&#x2F;offline.yml of your inventory directory.<br>You need to change YOUR_HOST with your registry&#x2F;nginx host IP.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">http_server: &quot;http://YOUR_HOST&quot;</span><br><span class="line">registry_host: &quot;YOUR_HOST:35000&quot;</span><br><span class="line"></span><br><span class="line"># Insecure registries for containerd</span><br><span class="line">containerd_registries_mirrors:</span><br><span class="line">  - prefix: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">    mirrors:</span><br><span class="line">      - host: &quot;http://&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">        capabilities: [&quot;pull&quot;, &quot;resolve&quot;]</span><br><span class="line">        skip_verify: true</span><br><span class="line"></span><br><span class="line">files_repo: &quot;&#123;&#123; http_server &#125;&#125;/files&quot;</span><br><span class="line">yum_repo: &quot;&#123;&#123; http_server &#125;&#125;/rpms&quot;</span><br><span class="line">ubuntu_repo: &quot;&#123;&#123; http_server &#125;&#125;/debs&quot;</span><br><span class="line"></span><br><span class="line"># Registry overrides</span><br><span class="line">kube_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">gcr_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">docker_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">quay_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line"></span><br><span class="line"># Download URLs: See roles/download/defaults/main.yml of kubespray.</span><br><span class="line">kubeadm_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/&#123;&#123; kube_version &#125;&#125;/kubeadm&quot;</span><br><span class="line">kubectl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/&#123;&#123; kube_version &#125;&#125;/kubectl&quot;</span><br><span class="line">kubelet_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/&#123;&#123; kube_version &#125;&#125;/kubelet&quot;</span><br><span class="line"># etcd is optional if you **DON&#x27;T** use etcd_deployment=host</span><br><span class="line">etcd_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/etcd/etcd-&#123;&#123; etcd_version &#125;&#125;-linux-amd64.tar.gz&quot;</span><br><span class="line">cni_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/cni/cni-plugins-linux-&#123;&#123; image_arch &#125;&#125;-&#123;&#123; cni_version &#125;&#125;.tgz&quot;</span><br><span class="line">crictl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/cri-tools/crictl-&#123;&#123; crictl_version &#125;&#125;-&#123;&#123; ansible_system | lower &#125;&#125;-&#123;&#123; image_arch &#125;&#125;.tar.gz&quot;</span><br><span class="line"># If using Calico</span><br><span class="line">calicoctl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/calico/&#123;&#123; calico_ctl_version &#125;&#125;/calicoctl-linux-&#123;&#123; image_arch &#125;&#125;&quot;</span><br><span class="line"># If using Calico with kdd</span><br><span class="line">calico_crds_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/calico/&#123;&#123; calico_version &#125;&#125;.tar.gz&quot;</span><br><span class="line"></span><br><span class="line">runc_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/runc/&#123;&#123; runc_version &#125;&#125;/runc.&#123;&#123; image_arch &#125;&#125;&quot;</span><br><span class="line">nerdctl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/nerdctl-&#123;&#123; nerdctl_version &#125;&#125;-&#123;&#123; ansible_system | lower &#125;&#125;-&#123;&#123; image_arch &#125;&#125;.tar.gz&quot;</span><br><span class="line">containerd_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/containerd-&#123;&#123; containerd_version &#125;&#125;-linux-&#123;&#123; image_arch &#125;&#125;.tar.gz&quot;</span><br></pre></td></tr></table></figure></div>
+<p>Notes:</p>
+<ul>
+<li>runc_donwload_url differ from kubespray official document, and must include runc_version.</li>
+<li>The insecure registries configurations of containerd were changed from kubespray 2.23.0. You need to set containerd_registries_mirrors instead of containerd_insecure_registries.</li>
+</ul>
+<h3 id="Error-1"><a href="#Error-1" class="headerlink" title="Error"></a>Error</h3><ul>
+<li>Install requirement.txt error<br>You can download whl and install offline</li>
+</ul>
+<h3 id="Deploy-offline-repo-configurations"><a href="#Deploy-offline-repo-configurations" class="headerlink" title="Deploy offline repo configurations"></a>Deploy offline repo configurations</h3><p>Deploy offline repo configurations which use your yum_repo&#x2F;ubuntu_repo to all target nodes using ansible.<br>First, copy offline setup playbook to kubespray directory.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r $&#123;outputs_dir&#125;/playbook $&#123;kubespray_dir&#125;</span><br></pre></td></tr></table></figure></div>
+<p>Then execute offline-repo.yml playbook.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $&#123;kubespray_dir&#125;</span><br><span class="line">ansible-playbook -i $&#123;your_inventory_file&#125; offline-repo.yml</span><br></pre></td></tr></table></figure></div>
+<h3 id="Run-kubespray"><a href="#Run-kubespray" class="headerlink" title="Run kubespray"></a>Run kubespray</h3><p>Run kubespray ansible playbook.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Example  </span><br><span class="line">ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml</span><br></pre></td></tr></table></figure></div>
+<h3 id="Finish！！！"><a href="#Finish！！！" class="headerlink" title="Finish！！！"></a>Finish！！！</h3>
         </div>
 
         
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 测试一种很新的Prompt</li>
+        <li><strong>Title:</strong> K8s offline deployment</li>
         <li><strong>Author:</strong> Alco</li>
         <li><strong>Created at
-                :</strong> 2023-10-19 19:00:40</li>
+                :</strong> 2023-10-29 13:43:11</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2023-10-29 13:38:56
+                    :</strong> 2023-10-29 13:55:33
             </li>
         
         <li>
-            <strong>Link:</strong> https://kidr1ce.github.io/2023/10/19/TemplateTalks-CRUD-Design/
+            <strong>Link:</strong> https://kidr1ce.github.io/2023/10/29/K8s-offline-deployment/
         </li>
         <li>
             <strong>
@@ -490,11 +529,11 @@
             <ul class="post-tags-box">
                 
                     <li class="tag-item">
-                        <a href="/tags/AI/">#AI</a>&nbsp;
+                        <a href="/tags/Deployment/">#Deployment</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/Design/">#Design</a>&nbsp;
+                        <a href="/tags/K8s/">#K8s</a>&nbsp;
                     </li>
                 
             </ul>
@@ -505,29 +544,14 @@
         
             <div class="article-nav">
                 
-                    <div class="article-prev">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2023/10/21/OpenAI-system-prompt/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">OpenAI system prompt</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2023/10/17/The-Genesis-Post/"
+                        href="/2023/10/29/How-to-do-things-you-ve-never-done-before/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">The Genesis Post</span>
+                                <span class="post-nav-title-item">How to do sth you&#39;ve never done before</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -605,8 +629,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">测试一种很新的Prompt</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Background"><span class="nav-text">Background</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8C%9C%E6%83%B3"><span class="nav-text">猜想</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Environment"><span class="nav-text">Environment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test"><span class="nav-text">Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E4%BB%A5%E4%B8%8B%E4%B8%9A%E5%8A%A1%E8%BD%AC%E6%8D%A2%E4%B8%BAPrompt%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95%EF%BC%9A"><span class="nav-text">将以下业务转换为Prompt进行测试：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%86%85%E5%AE%B9%EF%BC%9A"><span class="nav-text">测试内容：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prompt"><span class="nav-text">Prompt</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91"><span class="nav-text">代码逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prompt%E7%BC%96%E5%86%99"><span class="nav-text">Prompt编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-text">结果</span></a></li></ol></li></ol>
+        <div class="page-title">K8s offline deployment</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Environments%EF%BC%9A"><span class="nav-text">Environments：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#On-localhost"><span class="nav-text">On localhost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clone-kubespray-on-localhost"><span class="nav-text">Clone kubespray on localhost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-pip"><span class="nav-text">Install pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-Ansible"><span class="nav-text">Install Ansible</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-authorized-keys-update"><span class="nav-text">Add authorized_keys &amp; update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-k8s-to-online-env"><span class="nav-text">Install k8s to online-env</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Error"><span class="nav-text">Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test"><span class="nav-text">Test</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#On-online-env"><span class="nav-text">On online env</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clone-Kubespray-offline-on-online-env"><span class="nav-text">Clone Kubespray-offline on online-env</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Download-offline-files"><span class="nav-text">Download offline files</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Change-k8s-version"><span class="nav-text">Change k8s version</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Offline-installation"><span class="nav-text">Offline installation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Target-node-support-scripts"><span class="nav-text">Target node support scripts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-kubernetes-using-Kubespray"><span class="nav-text">Deploy kubernetes using Kubespray </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-offline-yml"><span class="nav-text">Create offline.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Error-1"><span class="nav-text">Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-offline-repo-configurations"><span class="nav-text">Deploy offline repo configurations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-kubespray"><span class="nav-text">Run kubespray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Finish%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-text">Finish！！！</span></a></li></ol></li></ol>
 
     </div>
 </div>
