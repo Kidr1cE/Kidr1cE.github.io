@@ -13,22 +13,17 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2023/10/29/2023-12-1-review/"/>
+    <link rel="canonical" href="http://example.com/categories/review/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Works1. Helm chart updateTips:    多层helm chart range调用时使用$调用外层变量 –dry-run不直接与集群交互无法测试完备 range可以直接遍历任意数组形式，包括[] -  2. SQL init没啥可Review，简单好用的Raw SQL 3. MinIO CRUD开源分布式对象存储数据库，使用没什么，但是对于这种没有mock client对">
-<meta property="og:type" content="article">
-<meta property="og:title" content="K8s offline deployment">
-<meta property="og:url" content="http://example.com/2023/10/29/2023-12-1-review/index.html">
+        <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/categories/Review/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Works1. Helm chart updateTips:    多层helm chart range调用时使用$调用外层变量 –dry-run不直接与集群交互无法测试完备 range可以直接遍历任意数组形式，包括[] -  2. SQL init没啥可Review，简单好用的Raw SQL 3. MinIO CRUD开源分布式对象存储数据库，使用没什么，但是对于这种没有mock client对">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-10-29T05:43:11.000Z">
-<meta property="article:modified_time" content="2023-12-01T12:37:22.390Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="Review">
 <meta name="twitter:card" content="summary">
     
     
@@ -41,7 +36,7 @@
     
     <title>
         
-            K8s offline deployment -
+            Category: Review -
         
         Alco&#39;s Blogs
     </title>
@@ -172,7 +167,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="" 
+                                <a class="active" 
                                     href="/categories/"  >
                                     
                                         
@@ -269,7 +264,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
                         href="/categories/"  >
                              
                                 
@@ -329,281 +324,44 @@
             <div class="main-content">
 
                 
-                    <div class="post-page-container">
-    <div class="article-content-container">
-
-        <div class="article-title">
-            
-                <h1 class="article-title-regular">K8s offline deployment</h1>
-            
-            </div>
-            
-                    
-        
-        
-            <div class="article-header flex flex-row gap-2 items-center">
-                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/images/face.jpg">
-                </div>
-                <div class="info flex flex-col justify-between">
-                    <div class="author flex items-center">
-                        <span class="name text-default-text-color text-lg font-semibold">Alco</span>
-                        
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
-                        
-                    </div>
-                    <div class="meta-info">
-                        <div class="article-meta-info">
-    <span class="article-date article-meta-item">
-        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-10-29 13:43:11</span>
-        <span class="mobile">2023-10-29 13:43:11</span>
-        <span class="hover-info">Created</span>
-    </span>
-    
-        <span class="article-date article-meta-item">
-            <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-01 20:37:22</span>
-            <span class="mobile">2023-12-01 20:37:22</span>
-            <span class="hover-info">Updated</span>
-        </span>
-    
-
-    
-        <span class="article-categories article-meta-item">
-            <i class="fa-regular fa-folders"></i>&nbsp;
-            <ul>
-                
-                
-                    
-                        
-                        <li>
-                            <a href="/categories/K8s/">K8s</a>&nbsp;
-                        </li>
-                    
-                    
-                
-            </ul>
-        </span>
-    
-    
-        <span class="article-tags article-meta-item">
-            <i class="fa-regular fa-tags"></i>&nbsp;
-            <ul>
-                
-                    <li>
-                        <a href="/tags/Review/">Review</a>&nbsp;
-                    </li>
-                
-            </ul>
-        </span>
-    
-
-    
-    
-    
-    
-        <span class="article-pv article-meta-item">
-            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
-        </span>
-    
-</div>
-
-                    </div>
-                </div>
-            </div>
-        
-
-        
-
-
-        <div class="article-content markdown-body">
-            <h2 id="Works"><a href="#Works" class="headerlink" title="Works"></a>Works</h2><h3 id="1-Helm-chart-update"><a href="#1-Helm-chart-update" class="headerlink" title="1. Helm chart update"></a>1. Helm chart update</h3><p>Tips:  </p>
-<ul>
-<li>多层helm chart range调用时使用<code>$</code>调用外层变量</li>
-<li>–dry-run不直接与集群交互无法测试完备</li>
-<li><code>range</code>可以直接遍历任意数组形式，包括<code>[]</code> <code>-</code></li>
-</ul>
-<h3 id="2-SQL-init"><a href="#2-SQL-init" class="headerlink" title="2. SQL init"></a>2. SQL init</h3><p>没啥可Review，简单好用的Raw SQL</p>
-<h3 id="3-MinIO-CRUD"><a href="#3-MinIO-CRUD" class="headerlink" title="3. MinIO CRUD"></a>3. MinIO CRUD</h3><p>开源分布式对象存储数据库，使用没什么，但是对于这种没有mock client对象的外部库，之后使用这种框架</p>
-<div class="highlight-container" data-rel="Go"><figure class="iseeu highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">NewClient() *Client</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Client <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="comment">// 里面写所有的本模块用到的函数</span></span><br><span class="line">    Create()</span><br><span class="line">    Read()</span><br><span class="line">    Update()</span><br><span class="line">    Delete()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// minio.go</span></span><br><span class="line"><span class="keyword">type</span> AnyDB <span class="keyword">struct</span> &#123;</span><br><span class="line">    cli Client</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// minio_test.go</span></span><br><span class="line"><span class="keyword">type</span> MockAnyDBClient <span class="keyword">struct</span> &#123;</span><br><span class="line">    mock.Mock</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 为mock client实现方法</span></span><br></pre></td></tr></table></figure></div>
-<p>这样测试中直接赋值就可以测试到dao逻辑 <del>虽然Dao没啥逻辑</del></p>
-<h2 id="Hobbies"><a href="#Hobbies" class="headerlink" title="Hobbies"></a>Hobbies</h2><h3 id="Penetration"><a href="#Penetration" class="headerlink" title="Penetration"></a>Penetration</h3><p>使用Nmap<br>主机发现  </p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nmap -sn 192.168.1.0/25 <span class="comment">#-sn 不扫描端口</span></span><br></pre></td></tr></table></figure></div>
-<p>找到主机后进行端口扫描</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nmap -sV 192.168.1.1 -Pn --disable-arp-ping</span><br></pre></td></tr></table></figure></div>
-<p>剩下的一些</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">例如: scanme.nmap.org, microsoft.com/24, 192.168.0.1; 10.0.0-255.1-254</span><br><span class="line">    -iL &lt;输入文件名&gt;: 从主机/网络列表文件输入</span><br><span class="line">    -iR &lt;主机数量&gt;: 随机选择目标</span><br><span class="line">    --exclude &lt;主机1[,主机2][,主机3],...&gt;: 排除主机/网络</span><br><span class="line">    --excludefile &lt;排除文件&gt;: 从文件中排除列表</span><br><span class="line">主机发现:</span><br><span class="line">    -sL: 列表扫描 - 只是列出要扫描的目标</span><br><span class="line">    -sn: Ping 扫描 - 禁用端口扫描</span><br><span class="line">    -Pn: 将所有主机视为在线 -- 跳过主机发现</span><br><span class="line">    -PS/PA/PU/PY[portlist]: 对指定端口进行 TCP SYN/ACK, UDP 或 SCTP 发现</span><br><span class="line">    -PE/PP/PM: ICMP 回声、时间戳和网络掩码请求探测</span><br><span class="line">    -PO[协议列表]: IP 协议 Ping</span><br><span class="line">    -n/-R: 从不进行 DNS 解析/总是解析 [默认: 有时]</span><br><span class="line">    --dns-servers &lt;服务器1[,服务器2],...&gt;: 指定自定义 DNS 服务器</span><br><span class="line">    --system-dns: 使用操作系统的 DNS 解析器</span><br><span class="line">    --traceroute: 跟踪每个主机的跳点路径</span><br><span class="line">扫描技术:</span><br><span class="line">    -sS/sT/sA/sW/sM: TCP SYN/Connect()/ACK/Window/Maimon 扫描</span><br><span class="line">    -sU: UDP 扫描</span><br><span class="line">    -sN/sF/sX: TCP Null, FIN 和 Xmas 扫描</span><br><span class="line">    --scanflags &lt;标志&gt;: 自定义 TCP 扫描标志</span><br><span class="line">    -sI &lt;僵尸主机[:探测端口]&gt;: 空闲扫描</span><br><span class="line">    -sY/sZ: SCTP INIT/COOKIE-ECHO 扫描</span><br><span class="line">    -sO: IP 协议扫描</span><br><span class="line">    -b &lt;FTP 中继主机&gt;: FTP 弹跳扫描</span><br><span class="line">端口规范和扫描顺序:</span><br><span class="line">    -p &lt;端口范围&gt;: 仅扫描指定端口</span><br><span class="line">    例如: -p22; -p1-65535; -p U:53,111,137,T:21-25,80,139,8080,S:9</span><br><span class="line">    --exclude-ports &lt;端口范围&gt;: 从扫描中排除指定端口</span><br><span class="line">    -F: 快速模式 - 扫描的端口比默认扫描少</span><br><span class="line">    -r: 顺序扫描端口 - 不随机化</span><br><span class="line">    --top-ports &lt;数量&gt;: 扫描最常见的 &lt;数量&gt; 个端口</span><br><span class="line">    --port-ratio &lt;比例&gt;: 扫描比 &lt;比例&gt; 更常见的端口</span><br><span class="line">服务/版本检测:</span><br><span class="line">    -sV: 探测开放端口以确定服务/版本信息</span><br><span class="line">    --version-intensity &lt;级别&gt;: 从 0 (轻) 到 9 (尝试所有探测)</span><br><span class="line">    --version-light: 限于最可能的探测 (强度 2)</span><br><span class="line">    --version-all: 尝试每一个单独的探测 (强度 9)</span><br><span class="line">    --version-trace: 显示详细版本扫描活动 (用于调试)</span><br></pre></td></tr></table></figure></div>
-<p>-sC执行默认脚本<br>实际上还有<code>--scripts</code> vlum、http-enum、banner<br>Tips:</p>
-<ul>
-<li>Termux不root没办法使用大多数渗透工具</li>
-<li>Flipper Zero渗透玩具</li>
-</ul>
-<h3 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h3><p>ChatGLM、Stable Diffision<br>Yolov5训练集制作工具：server+OBS插件</p>
-<h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3><p>Tips：</p>
-<ul>
-<li>K8s自带LoadBalancer</li>
-<li>Runner模块使用Docker in Docker模式，制作轻量级沙箱环境，使用shell命令运行代码并跟踪</li>
-<li>学习Golang轻量级项目文件组织形式：pkg、cmd、internal、…</li>
-</ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>没啥好说的，全是中等每日一题。<br>对于存在状态的题目并不要求状态的题目：<strong>考虑 动态规划！</strong></p>
-
-        </div>
-
-        
-            <div class="post-copyright-info">
-                <div class="article-copyright-info-container">
-    <ul>
-        <li><strong>Title:</strong> K8s offline deployment</li>
-        <li><strong>Author:</strong> Alco</li>
-        <li><strong>Created at
-                :</strong> 2023-10-29 13:43:11</li>
-        
-            <li>
-                <strong>Updated at
-                    :</strong> 2023-12-01 20:37:22
-            </li>
-        
-        <li>
-            <strong>Link:</strong> https://kidr1ce.github.io/2023/10/29/2023-12-1-review/
-        </li>
-        <li>
-            <strong>
-                License:
-            </strong>
-            
-            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
-            
-
-        </li>
-    </ul>
-</div>
-
-            </div>
-        
-
-        
-            <ul class="post-tags-box">
-                
-                    <li class="tag-item">
-                        <a href="/tags/Review/">#Review</a>&nbsp;
-                    </li>
-                
-            </ul>
-        
-
-        
-
-        
-            <div class="article-nav">
-                
-                    <div class="article-prev">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2023/10/29/K8s-offline-deployment/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">K8s offline deployment</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="article-next">
-                        <a class="next"
-                        rel="next"
-                        href="/2023/10/29/How-to-do-things-you-ve-never-done-before/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">How to do sth you&#39;ve never done before</span>
-                                <span class="post-nav-item">Next posts</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                
-            </div>
-        
-
-
-        
-            <div class="comment-container">
-                <div class="comments-container pjax">
-    <div id="comment-anchor"></div>
-    <div class="comment-area-title">
-        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+                    <div class="category-container">
+    <div class="category-name">
+        <i class="fa-solid fa-folder"></i>&nbsp;Review
     </div>
+    <div class="category-post-list">
+        
+
+<div class="archive-list-container">
     
-
-        
-            
-    <div id="gitalk-container"></div>
-    <script data-swup-reload-script
-            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-    <script data-swup-reload-script>
-
-        function loadGitalk() {
-            let __gitalk__pathname = decodeURI(location.pathname);
-            const __gitalk__pathnameLength = __gitalk__pathname.length;
-            const __gitalk__pathnameMaxLength = 50;
-            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
-                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
-            }
-
-            try {
-                Gitalk && new Gitalk({
-                    clientID: 'b0ccc6b27c12fe7410b0',
-                    clientSecret: '81e9596652107f0b2e588a6190b4c269c6f7f684',
-                    repo: 'Kidr1cE.github.io',
-                    owner: 'Kidr1cE',
-                    admin: ['Kidr1cE'],
-                    id: __gitalk__pathname,
-                    language: 'en'
-                }).render('gitalk-container');
-
-            } catch (e) {
-                window.Gitalk = null;
-            }
-        }
-
-        if ('true') {
-            const loadGitalkTimeout = setTimeout(() => {
-                loadGitalk();
-                clearTimeout(loadGitalkTimeout);
-            }, 1000);
-        } else {
-            window.addEventListener('DOMContentLoaded', loadGitalk);
-        }
-    </script>
-
-
-
-        
+        <section class="archive-item">
+            <div class="archive-item-header">
+                <span class="archive-year">2023</span>
+                <span class="archive-year-post-count">[1]</span>
+            </div>
+            <ul class="article-list">
+              
+                
+                    
+                    <li class="article-item" date-is='10-29'>
+                
+                
+                    <a href="/2023/10/29/2023-12-1-review-1/">
+                        <span class="article-title">2023.12.1 Review</span>
+                    </a>
+                
+              
+            </ul>
+        </section>
     
 </div>
-
-            </div>
-        
-    </div>
-
-    
-        <div class="toc-content-container">
-            <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">On this page</div>
-        <div class="page-title">K8s offline deployment</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Works"><span class="nav-text">Works</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Helm-chart-update"><span class="nav-text">1. Helm chart update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SQL-init"><span class="nav-text">2. SQL init</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-MinIO-CRUD"><span class="nav-text">3. MinIO CRUD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hobbies"><span class="nav-text">Hobbies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Penetration"><span class="nav-text">Penetration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AI"><span class="nav-text">AI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang"><span class="nav-text">Golang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-text">算法</span></a></li></ol></li></ol>
 
     </div>
 </div>
-        </div>
-    
+<div class="category-paginator">
+    <div class="paginator">
+    <span class="page-number current">1</span>
+</div>
+
 </div>
 
 
@@ -679,27 +437,6 @@
         </div>
     </div>
 
-    
-        <div class="post-tools">
-            <div class="post-tools-container">
-    <ul class="article-tools-list">
-        <!-- TOC aside toggle -->
-        
-            <li class="right-bottom-tools page-aside-toggle">
-                <i class="fa-regular fa-outdent"></i>
-            </li>
-        
-
-        <!-- go comment -->
-        
-            <li class="go-comment">
-                <i class="fa-regular fa-comments"></i>
-            </li>
-        
-    </ul>
-</div>
-
-        </div>
     
 
     <div class="right-side-tools-container">
