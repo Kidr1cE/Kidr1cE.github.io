@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Alco">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/04/11/k8s-offline-deployment/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Environments： Online env Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory   Offline env(target node) Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory, 100GB available disk space   Any VM (refer to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K8s offline deployment">
+<meta property="og:url" content="http://example.com/2024/04/11/K8s-offline-deployment/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Environments： Online env Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory   Offline env(target node) Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory, 100GB available disk space   Any VM (refer to">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-04-11T00:40:44.000Z">
+<meta property="article:modified_time" content="2024-04-11T00:41:42.167Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Deployment">
+<meta property="article:tag" content="K8s">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/face.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/face.jpg">
+    <meta name="theme-color" content="#9AC8E2">
+    <link rel="shortcut icon" href="/images/face.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            K8s offline deployment -
+        
+        Alco&#39;s Blogs
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        Alco&#39;s Blogs
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#9AC8E2","secondary":"#FFD700","default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"static","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"Alco's TechBlog","subtitle":{"text":["Existence precedes essence."],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn/?c=l"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#FFD700","dark":"#FFD700"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Kidr1cE","instagram":null,"zhihu":null,"twitter":null,"email":"alco89963@163.com","font-awesome":"https://leetcode.cn/u/tender-sandersonork"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":"enable","version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Github":"https://github.com/EvanNotFound/hexo-theme-redefine","LeetCode":"https://leetcode.cn/u/tender-sandersonork"}}},"search":{"enable":false,"preload":true},"tags":{"Tags":{"icon":"fa-solid fa-tags","path":"/tags/"}}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"YYYY-MM-DD","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Alco&#39;s Blogs
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    CATEGORIES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://leetcode.cn/u/tender-sandersonork">
+                                                    LEETCODE
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                CATEGORIES
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/EvanNotFound/hexo-theme-redefine">GITHUB</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://leetcode.cn/u/tender-sandersonork">LEETCODE</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">K8s offline deployment</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/face.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Alco</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-04-11 08:40:44</span>
+        <span class="mobile">2024-04-11 08:40:44</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-04-11 08:41:42</span>
+            <span class="mobile">2024-04-11 08:41:42</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/K8s/">K8s</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Deployment/">Deployment</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/K8s/">K8s</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Environments："><a href="#Environments：" class="headerlink" title="Environments："></a>Environments：</h2><ul>
+<li>Online env<ul>
+<li>Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory</li>
+</ul>
+</li>
+<li>Offline env(target node)<ul>
+<li>Ubuntu-22.04.3-live-server-amd64, 4 CPU, 8G Memory, 100GB available disk space</li>
+</ul>
+</li>
+<li>Any VM (refer to source VM, localhost)<ul>
+<li>Python 3.10</li>
+<li>kubespray 2.22.1, kubespray-offline 2.22.1</li>
+<li>100GB available disk space<br>Note: You must execute this process on the same OS of k8s target nodes.(Online env &amp; target node)</li>
+</ul>
+</li>
+</ul>
+<h2 id="On-localhost"><a href="#On-localhost" class="headerlink" title="On localhost"></a>On localhost</h2><h3 id="Clone-kubespray-on-localhost"><a href="#Clone-kubespray-on-localhost" class="headerlink" title="Clone kubespray on localhost"></a>Clone kubespray on localhost</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/kubernetes-sigs/kubespray.git</span><br></pre></td></tr></table></figure></div>
+<h3 id="Install-pip"><a href="#Install-pip" class="headerlink" title="Install pip"></a>Install pip</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sS https://bootstrap.pypa.io/get-pip.py | python3</span><br></pre></td></tr></table></figure></div>
+<h3 id="Install-Ansible"><a href="#Install-Ansible" class="headerlink" title="Install Ansible"></a>Install Ansible</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># if your python3 is python3.8</span><br><span class="line">alias python3=&#x27;/usr/bin/python3.10&#x27;</span><br><span class="line"></span><br><span class="line"># install venv</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install python3.10-venv</span><br><span class="line"></span><br><span class="line"># source python venv</span><br><span class="line">VENVDIR=kubespray-venv</span><br><span class="line">KUBESPRAYDIR=kubespray</span><br><span class="line">python3 -m venv $VENVDIR</span><br><span class="line">source $VENVDIR/bin/activate</span><br><span class="line">cd $KUBESPRAYDIR</span><br><span class="line">python3 -m pip install -U -r requirements.txt</span><br></pre></td></tr></table></figure></div>
+<h3 id="Add-authorized-keys-update"><a href="#Add-authorized-keys-update" class="headerlink" title="Add authorized_keys &amp; update"></a>Add authorized_keys &amp; update</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br><span class="line">ssh-copy-id &#123;online-env-user&#125;@&#123;online-env-ip&#125;</span><br></pre></td></tr></table></figure></div>
+<h3 id="Install-k8s-to-online-env"><a href="#Install-k8s-to-online-env" class="headerlink" title="Install k8s to online-env"></a>Install k8s to online-env</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">Change K8s version &amp; calico to ovn in inventory/online_env/group_vars/k8s_cluster/k8s-cluster.yml</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># Copy ``inventory/sample`` as ``inventory/mycluster``</span><br><span class="line">cp -rfp inventory/sample inventory/online_env</span><br><span class="line"></span><br><span class="line"># Update Ansible inventory file with inventory builder</span><br><span class="line">declare -a IPS=(online-env-ip)</span><br><span class="line">CONFIG_FILE=inventory/online_env/hosts.yaml python3 contrib/inventory_builder/inventory.py $&#123;IPS[@]&#125;</span><br><span class="line"></span><br><span class="line"># Review and change parameters under ``inventory/mycluster/group_vars``</span><br><span class="line">cat inventory/online_env/group_vars/all/all.yml</span><br><span class="line"># Update </span><br><span class="line">cat inventory/online_env/group_vars/k8s_cluster/k8s-cluster.yml</span><br><span class="line"></span><br><span class="line"># Clean up old Kubernetes cluster with Ansible Playbook - run the playbook as root</span><br><span class="line"># The option `--become` is required, as for example cleaning up SSL keys in /etc/,</span><br><span class="line"># uninstalling old packages and interacting with various systemd daemons.</span><br><span class="line"># Without --become the playbook will fail to run!</span><br><span class="line"># And be mind it will remove the current kubernetes cluster (if it&#x27;s running)!</span><br><span class="line">ansible-playbook -i inventory/online_env/hosts.yaml  --become --user=&#123;online_env_username&#125; --become-user=root --ask-become-pass reset.yml</span><br><span class="line"></span><br><span class="line"># Deploy Kubespray with Ansible Playbook - run the playbook as root</span><br><span class="line"># The option `--become` is required, as for example writing SSL keys in /etc/,</span><br><span class="line"># installing packages and interacting with various systemd daemons.</span><br><span class="line"># Without --become the playbook will fail to run!</span><br><span class="line"># Add--user=&#123;username&#125; &amp; --ask-become-pass</span><br><span class="line">ansible-playbook -i inventory/online_env/hosts.yaml  --become --user=&#123;online_env_username&#125; --become-user=root --ask-become-pass cluster.yml</span><br></pre></td></tr></table></figure></div>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h3><p>Or add Add–user&#x3D;{username} &amp; –ask-become-pass to reset and cluster</p>
+<ul>
+<li>fatal: [node1]: FAILED! &#x3D;&gt; {“attempts”: 4, “censored”: “the output has been hidden due to the fact that ‘no_log: true’ was specified for this result”, “changed”: false}<br>Run: vi inventory&#x2F;{yourcluster}&#x2F;group_vars&#x2F;all&#x2F;mirror.yml, add mirror</li>
+</ul>
+<h3 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h3><p>Run:sudo kubectl get pods -A</p>
+<h2 id="On-online-env"><a href="#On-online-env" class="headerlink" title="On online env"></a>On online env</h2><h3 id="Clone-Kubespray-offline-on-online-env"><a href="#Clone-Kubespray-offline-on-online-env" class="headerlink" title="Clone Kubespray-offline on online-env"></a>Clone Kubespray-offline on online-env</h3><p>Note: You must execute this process on the same OS of k8s target nodes.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/kubespray-offline/kubespray-offline.git</span><br></pre></td></tr></table></figure></div>
+<p>Before download offline files, check and edit configurations in kubespray-offlineconfig.sh.<br>If you don’t have container runtime (docker or containerd), install it first.</p>
+<ul>
+<li>To use Docker CE<ul>
+<li>run install-docker.sh to install Docker CE.</li>
+</ul>
+</li>
+<li>To use containerd<ul>
+<li>run.&#x2F;install-containerd.sh to install containerd and nerdctl.</li>
+<li>set docker environment variable to &#x2F;usr&#x2F;local&#x2F;bin&#x2F;nerdctl in config.sh.<br>Then, download all files</li>
+</ul>
+</li>
+</ul>
+<h2 id="Download-offline-files"><a href="#Download-offline-files" class="headerlink" title="Download offline files"></a>Download offline files</h2><h3 id="Change-k8s-version"><a href="#Change-k8s-version" class="headerlink" title="Change k8s version"></a>Change k8s version</h3><p>Change download-kubespray-files.sh line 82:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash $&#123;KUBESPRAY_DIR&#125;/contrib/offline/generate_list.sh -e kube_version=&quot;v1.26.3&quot; || exit 1</span><br></pre></td></tr></table></figure></div>
+<p>Run: download-all.sh<br>All artifacts are stored in .&#x2F;outputs directory.<br>Package outputs:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -czvf outputs.tar.gz outputs/</span><br></pre></td></tr></table></figure></div>
+<p>Use the SCP command to transfer the output archive to the machine where you need to install k8s in an offline environment.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp outputs.tar.gz xxx@192.168.xxx.xxx:.</span><br></pre></td></tr></table></figure></div>
+<h2 id="Offline-installation"><a href="#Offline-installation" class="headerlink" title="Offline installation"></a>Offline installation</h2><h3 id="Target-node-support-scripts"><a href="#Target-node-support-scripts" class="headerlink" title="Target node support scripts"></a>Target node support scripts</h3><p>Unpackage tar on the machine where you need to install k8s to an offline environment.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf outputs.tar.gz</span><br></pre></td></tr></table></figure></div>
+<p>Run: outputs&#x2F;setup-all.sh</p>
+<h3 id="Deploy-kubernetes-using-Kubespray"><a href="#Deploy-kubernetes-using-Kubespray" class="headerlink" title="Deploy kubernetes using Kubespray"></a><a class="link"   target="_blank" rel="noopener" href="https://github.com/kubespray-offline/kubespray-offline#deploy-kubernetes-using-kubespray" >Deploy kubernetes using Kubespray <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># Create and activate venv:</span><br><span class="line">python3 -m venv ~/.venv/default</span><br><span class="line">source ~/.venv/default/bin/activate</span><br><span class="line"></span><br><span class="line"># Note: For Ubuntu 20.04 and RHEL/CentOS 8, you need to use python 3.9.</span><br><span class="line"># python3.9 -m venv ~/.venv/default</span><br><span class="line"># source ~/.venv/default/bin/activate</span><br><span class="line"></span><br><span class="line"># Extract kubespray and apply patches:</span><br><span class="line">./extract-kubespray.sh</span><br><span class="line">cd kubespray-&#123;version&#125;</span><br><span class="line"></span><br><span class="line"># For Ubuntu 22.04, you need to install build tools to build some python packages.</span><br><span class="line">sudo apt install gcc python3-dev libffi-dev libssl-dev</span><br><span class="line"></span><br><span class="line"># Install ansible:</span><br><span class="line">pip install -U pip                # update pip</span><br><span class="line">pip install -r requirements.txt   # Install ansible</span><br></pre></td></tr></table></figure></div>
+<h3 id="Create-offline-yml"><a href="#Create-offline-yml" class="headerlink" title="Create offline.yml"></a>Create offline.yml</h3><p>Create and place offline.yml file to your group_vars&#x2F;all&#x2F;offline.yml of your inventory directory.<br>You need to change YOUR_HOST with your registry&#x2F;nginx host IP.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">http_server: &quot;http://YOUR_HOST&quot;</span><br><span class="line">registry_host: &quot;YOUR_HOST:35000&quot;</span><br><span class="line"></span><br><span class="line"># Insecure registries for containerd</span><br><span class="line">containerd_registries_mirrors:</span><br><span class="line">  - prefix: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">    mirrors:</span><br><span class="line">      - host: &quot;http://&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">        capabilities: [&quot;pull&quot;, &quot;resolve&quot;]</span><br><span class="line">        skip_verify: true</span><br><span class="line"></span><br><span class="line">files_repo: &quot;&#123;&#123; http_server &#125;&#125;/files&quot;</span><br><span class="line">yum_repo: &quot;&#123;&#123; http_server &#125;&#125;/rpms&quot;</span><br><span class="line">ubuntu_repo: &quot;&#123;&#123; http_server &#125;&#125;/debs&quot;</span><br><span class="line"></span><br><span class="line"># Registry overrides</span><br><span class="line">kube_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">gcr_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">docker_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line">quay_image_repo: &quot;&#123;&#123; registry_host &#125;&#125;&quot;</span><br><span class="line"></span><br><span class="line"># Download URLs: See roles/download/defaults/main.yml of kubespray.</span><br><span class="line">kubeadm_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/&#123;&#123; kube_version &#125;&#125;/kubeadm&quot;</span><br><span class="line">kubectl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/&#123;&#123; kube_version &#125;&#125;/kubectl&quot;</span><br><span class="line">kubelet_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/&#123;&#123; kube_version &#125;&#125;/kubelet&quot;</span><br><span class="line"># etcd is optional if you **DON&#x27;T** use etcd_deployment=host</span><br><span class="line">etcd_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/etcd/etcd-&#123;&#123; etcd_version &#125;&#125;-linux-amd64.tar.gz&quot;</span><br><span class="line">cni_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/cni/cni-plugins-linux-&#123;&#123; image_arch &#125;&#125;-&#123;&#123; cni_version &#125;&#125;.tgz&quot;</span><br><span class="line">crictl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/cri-tools/crictl-&#123;&#123; crictl_version &#125;&#125;-&#123;&#123; ansible_system | lower &#125;&#125;-&#123;&#123; image_arch &#125;&#125;.tar.gz&quot;</span><br><span class="line"># If using Calico</span><br><span class="line">calicoctl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/calico/&#123;&#123; calico_ctl_version &#125;&#125;/calicoctl-linux-&#123;&#123; image_arch &#125;&#125;&quot;</span><br><span class="line"># If using Calico with kdd</span><br><span class="line">calico_crds_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/kubernetes/calico/&#123;&#123; calico_version &#125;&#125;.tar.gz&quot;</span><br><span class="line"></span><br><span class="line">runc_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/runc/&#123;&#123; runc_version &#125;&#125;/runc.&#123;&#123; image_arch &#125;&#125;&quot;</span><br><span class="line">nerdctl_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/nerdctl-&#123;&#123; nerdctl_version &#125;&#125;-&#123;&#123; ansible_system | lower &#125;&#125;-&#123;&#123; image_arch &#125;&#125;.tar.gz&quot;</span><br><span class="line">containerd_download_url: &quot;&#123;&#123; files_repo &#125;&#125;/containerd-&#123;&#123; containerd_version &#125;&#125;-linux-&#123;&#123; image_arch &#125;&#125;.tar.gz&quot;</span><br></pre></td></tr></table></figure></div>
+<p>Notes:</p>
+<ul>
+<li>runc_donwload_url differ from kubespray official document, and must include runc_version.</li>
+<li>The insecure registries configurations of containerd were changed from kubespray 2.23.0. You need to set containerd_registries_mirrors instead of containerd_insecure_registries.</li>
+</ul>
+<h3 id="Error-1"><a href="#Error-1" class="headerlink" title="Error"></a>Error</h3><ul>
+<li>Install requirement.txt error<br>You can download whl and install offline</li>
+</ul>
+<h3 id="Deploy-offline-repo-configurations"><a href="#Deploy-offline-repo-configurations" class="headerlink" title="Deploy offline repo configurations"></a>Deploy offline repo configurations</h3><p>Deploy offline repo configurations which use your yum_repo&#x2F;ubuntu_repo to all target nodes using ansible.<br>First, copy offline setup playbook to kubespray directory.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r $&#123;outputs_dir&#125;/playbook $&#123;kubespray_dir&#125;</span><br></pre></td></tr></table></figure></div>
+<p>Then execute offline-repo.yml playbook.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $&#123;kubespray_dir&#125;</span><br><span class="line">ansible-playbook -i $&#123;your_inventory_file&#125; offline-repo.yml</span><br></pre></td></tr></table></figure></div>
+<h3 id="Run-kubespray"><a href="#Run-kubespray" class="headerlink" title="Run kubespray"></a>Run kubespray</h3><p>Run kubespray ansible playbook.</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Example  </span><br><span class="line">ansible-playbook -i inventory/mycluster/hosts.yaml  --become --become-user=root cluster.yml</span><br></pre></td></tr></table></figure></div>
+<h3 id="Finish！！！"><a href="#Finish！！！" class="headerlink" title="Finish！！！"></a>Finish！！！</h3>
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> K8s offline deployment</li>
+        <li><strong>Author:</strong> Alco</li>
+        <li><strong>Created at
+                :</strong> 2024-04-11 08:40:44</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-04-11 08:41:42
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kidr1ce.github.io/2024/04/11/K8s-offline-deployment/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Deployment/">#Deployment</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/K8s/">#K8s</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/04/11/The-Genesis-Post/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">The-Genesis-Post</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/10/17/The-Genesis-Post--1/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">The Genesis Post</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'b0ccc6b27c12fe7410b0',
+                    clientSecret: '81e9596652107f0b2e588a6190b4c269c6f7f684',
+                    repo: 'Kidr1cE.github.io',
+                    owner: 'Kidr1cE',
+                    admin: ['Kidr1cE'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">K8s offline deployment</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Environments%EF%BC%9A"><span class="nav-text">Environments：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#On-localhost"><span class="nav-text">On localhost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clone-kubespray-on-localhost"><span class="nav-text">Clone kubespray on localhost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-pip"><span class="nav-text">Install pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-Ansible"><span class="nav-text">Install Ansible</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-authorized-keys-update"><span class="nav-text">Add authorized_keys &amp; update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-k8s-to-online-env"><span class="nav-text">Install k8s to online-env</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Error"><span class="nav-text">Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test"><span class="nav-text">Test</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#On-online-env"><span class="nav-text">On online env</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Clone-Kubespray-offline-on-online-env"><span class="nav-text">Clone Kubespray-offline on online-env</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Download-offline-files"><span class="nav-text">Download offline files</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Change-k8s-version"><span class="nav-text">Change k8s version</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Offline-installation"><span class="nav-text">Offline installation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Target-node-support-scripts"><span class="nav-text">Target node support scripts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-kubernetes-using-Kubespray"><span class="nav-text">Deploy kubernetes using Kubespray </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-offline-yml"><span class="nav-text">Create offline.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Error-1"><span class="nav-text">Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-offline-repo-configurations"><span class="nav-text">Deploy offline repo configurations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-kubespray"><span class="nav-text">Run kubespray</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Finish%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-text">Finish！！！</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Alco</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        3 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/libs/mermaid.min.js"></script>
+
+    
+<script src="/js/plugins/mermaid.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
